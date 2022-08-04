@@ -1,7 +1,7 @@
 const googleBtn = document.querySelector("#google-register");
 
 const googleAuth = () => {
-  const googleAuthProvider = new firebase.auth.googleAuthProvider();
+  const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
   firebase
     .auth()
     .signINWithPopup(googleAuthProvider)
