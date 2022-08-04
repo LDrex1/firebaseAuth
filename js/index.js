@@ -5,7 +5,7 @@ const googleAuth = () => {
   firebase
     .auth()
     .signInWithPopup(googleAuthProvider)
-    .then(() => window.open())
+    .then(() => window.open("document.URL", "_blank"))
     .catch((err) => console.log(err.message));
   //   googleBtn.removeEventListener("click", googleAuth);
 };
