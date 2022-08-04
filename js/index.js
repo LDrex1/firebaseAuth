@@ -1,4 +1,4 @@
-const googleBtn = document.querySelector("#googleRegister");
+const googleBtn = document.querySelector("#google-register");
 
 const googleAuth = async () => {
   googleBtn ? googleBtn.addEventListener("click", googleAuth) : null;
