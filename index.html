@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <section
+      class="first container d-flex flex-column align-items-center justify-content-center"
+    >
+      <form action="">
+        <div class="">
+          <div class="input">
+            <input class="form-control" type="text" inputmode="email" />
+          </div>
+          <div class="input">
+            <input class="form-control" type="password" />
+          </div>
+
+          <button class="btn-btn">Sign in</button>
+          <button id="google-register" class="btn-btn">
+            Resgister with Google
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyAP6lcvFpfpKeJa5AsIlyliWK0sLPP7dIM",
+        authDomain: "pilot-a0c07.firebaseapp.com",
+        projectId: "pilot-a0c07",
+        storageBucket: "pilot-a0c07.appspot.com",
+        messagingSenderId: "1095737579167",
+        appId: "1:1095737579167:web:4dbdde6015b126475cf4aa",
+        measurementId: "G-LSJ27QS9VJ",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+    </script>
+    <script src="js/index.js"></script>
+  </body>
+</html>
