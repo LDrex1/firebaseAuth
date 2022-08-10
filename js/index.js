@@ -1,6 +1,7 @@
 const googleBtn = document.querySelector("#google-register");
 const register = document.querySelector("#register");
 const signInBtn = document.querySelector("#sign-in");
+const signOutBtn = document.querySelector("#sign-out");
 
 //firebase initialsizatiokn and key
 
@@ -28,6 +29,7 @@ console.log(email, "em");
 googleBtn ? googleBtn.addEventListener("click", googleAuth) : null;
 register ? register.addEventListener("click", signup) : null;
 signInBtn ? signInBtn.addEventListener("click", signIn) : null;
+signOutBtn ? signOutBtn.addEventListener("click", signOut) : null;
 
 function googleAuth() {
   const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
