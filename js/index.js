@@ -17,6 +17,12 @@ const firebaseConfig = {
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+
+//Initialize Cloud Firestore and get a reference
+const db = firebase.firestore();
+
+/** Authentication related code */
+
 //   const analytics = getAnalytics(app);
 const auth = firebase.auth();
 
@@ -83,3 +89,22 @@ function signOut(ev) {
     console.log(resp);
   });
 }
+
+/**Firestore related code */
+//adding to the songs collection
+
+// db.collection("songs")
+//   .add({
+//     title: "Little Bit Louder",
+//     artist: "Mimi Webb",
+//   })
+//   .then((docRef) => console.log("new Doc", docRef, docRef.id))
+//   .catch((err) => console.log(err.message));
+
+//getting/fetching from the firestore
+db.collection("songs")
+  .get()
+  .then((snapshot) => {
+    console.log(snapshot.docs[0]);
+    snapshot.forEach((doc) => console.log(doc.data(), doc.id));
+  });
