@@ -30,13 +30,15 @@ const emailIn = document.querySelector("#email-in");
 const email = document.querySelector("#email");
 const password = document.querySelector("#password");
 const passwordIn = document.querySelector("#password-in");
-console.log(email, "em");
+const restricted = document.querySelector("#restricted");
+const restrictedContent = restricted.querySelector("#content");
 
 googleBtn ? googleBtn.addEventListener("click", googleAuth) : null;
 register ? register.addEventListener("click", signup) : null;
 signInBtn ? signInBtn.addEventListener("click", signIn) : null;
 signOutBtn ? signOutBtn.addEventListener("click", signOut) : null;
 
+/** Functions */
 function googleAuth() {
   const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
   auth
@@ -47,10 +49,32 @@ function googleAuth() {
 }
 
 //
+
 auth.onAuthStateChanged((user) => {
-  console.log(user);
+  let root = "";
+  if (user) {
+    db.collection("songs")
+      .get()
+      .then((snapshot) => showContent(snapshot.docs, root));
+  } else {
+    root += `<h4>You need to register or sign in</h4>`;
+    restrictedContent.innerHTML = root;
+  }
 });
+
 //
+
+function showContent(songsArray, htmlDest) {
+  songsArray.forEach((song) => {
+    const { title, artist } = song.data();
+    htmlDest += `
+          <li class="text-center">${title}</li>
+          <li class="text-center">${artist}</li>
+          `;
+  });
+  restrictedContent.innerHTML = htmlDest;
+}
+
 function signup(ev) {
   console.log(password);
   console.log(email.value, 1);
@@ -106,5 +130,5 @@ db.collection("songs")
   .get()
   .then((snapshot) => {
     console.log(snapshot.docs[0]);
-    snapshot.forEach((doc) => console.log(doc.data(), doc.id));
+    snapshot.forEach((doc) => console.log(doc, doc.id));
   });
