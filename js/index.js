@@ -40,6 +40,11 @@ function googleAuth() {
   //   googleBtn.removeEventListener("click", googleAuth);
 }
 
+//
+auth.onAuthStateChanged((user) => {
+  console.log(user);
+});
+//
 function signup(ev) {
   console.log(password);
   console.log(email.value, 1);
