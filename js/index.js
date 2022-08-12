@@ -32,6 +32,8 @@ const password = document.querySelector("#password");
 const passwordIn = document.querySelector("#password-in");
 const restricted = document.querySelector("#restricted");
 const restrictedContent = restricted.querySelector("#content");
+const onlineData = document.querySelectorAll(".online");
+const offlineData = document.querySelectorAll(".offline");
 
 googleBtn ? googleBtn.addEventListener("click", googleAuth) : null;
 register ? register.addEventListener("click", signup) : null;
@@ -55,14 +57,35 @@ auth.onAuthStateChanged((user) => {
   if (user) {
     db.collection("songs")
       .get()
-      .then((snapshot) => showContent(snapshot.docs, root));
+      .then((snapshot) => {
+        showContent(snapshot.docs, root);
+        uiSetup(user);
+      });
   } else {
     root += `<h4>You need to register or sign in</h4>`;
     restrictedContent.innerHTML = root;
+    uiSetup(user);
   }
 });
 
 //
+
+function uiSetup(user) {
+  const disp = (content) => {
+    content.forEach((ele) => (ele.style.display = "block") && console.log(ele));
+  };
+  const hide = (content) => {
+    content.forEach((ele) => (ele.style.width = "none"));
+  };
+  if (user) {
+    disp(onlineData);
+    hide(offlineData);
+  } else {
+    disp(offlineData);
+    hide(onlineData);
+    console.log("offline");
+  }
+}
 
 function showContent(songsArray, htmlDest) {
   songsArray.forEach((song) => {
