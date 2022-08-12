@@ -34,20 +34,26 @@ const restricted = document.querySelector("#restricted");
 const restrictedContent = restricted.querySelector("#content");
 const onlineData = document.querySelectorAll(".online");
 const offlineData = document.querySelectorAll(".offline");
+const titleInput = document.querySelector("#title");
+const artistInput = document.querySelector("#artist");
+const generalForm = document.querySelector("#general-form");
+const addSongBtn = document.querySelector("#add-song");
 
 googleBtn ? googleBtn.addEventListener("click", googleAuth) : null;
 register ? register.addEventListener("click", signup) : null;
 signInBtn ? signInBtn.addEventListener("click", signIn) : null;
 signOutBtn ? signOutBtn.addEventListener("click", signOut) : null;
+addSongBtn.addEventListener("click", addSong);
 
 /** Functions */
 function googleAuth() {
+  googleBtn.removeEventListener("click", googleAuth);
   const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
   auth
     .signInWithPopup(googleAuthProvider)
     .then(() => window.open("document.URL", "_blank"))
     .catch((err) => console.log(err.message));
-  //   googleBtn.removeEventListener("click", googleAuth);
+  googleBtn ? googleBtn.addEventListener("click", googleAuth) : null;
 }
 
 //
@@ -55,12 +61,10 @@ function googleAuth() {
 auth.onAuthStateChanged((user) => {
   let root = "";
   if (user) {
-    db.collection("songs")
-      .get()
-      .then((snapshot) => {
-        showContent(snapshot.docs, root);
-        uiSetup(user);
-      });
+    db.collection("songs").onSnapshot((snapshot) => {
+      showContent(snapshot.docs, root);
+      uiSetup(user);
+    });
   } else {
     root += `<h4>You need to register or sign in</h4>`;
     restrictedContent.innerHTML = root;
@@ -72,10 +76,10 @@ auth.onAuthStateChanged((user) => {
 
 function uiSetup(user) {
   const disp = (content) => {
-    content.forEach((ele) => (ele.style.display = "block") && console.log(ele));
+    content.forEach((ele) => (ele.style.display = "block"));
   };
   const hide = (content) => {
-    content.forEach((ele) => (ele.style.width = "none"));
+    content.forEach((ele) => (ele.style.display = "none") && console.log(ele));
   };
   if (user) {
     disp(onlineData);
@@ -85,6 +89,21 @@ function uiSetup(user) {
     hide(onlineData);
     console.log("offline");
   }
+}
+
+function addSong(ev) {
+  addSongBtn.removeEventListener("click", addSong);
+  ev.preventDefault();
+  const arrangeData = (title, artist) => {
+    db.collection("songs")
+      .add({
+        title: title,
+        artist: artist,
+      })
+      .then(() => generalForm.reset());
+  };
+  arrangeData(titleInput.value, artistInput.value);
+  addSongBtn.addEventListener("click", addSong);
 }
 
 function showContent(songsArray, htmlDest) {
@@ -114,6 +133,7 @@ function signup(ev) {
 
 function signIn(ev) {
   ev.preventDefault();
+  signInBtn.removeEventListener("click", signIn);
   console.log("Sign In");
   auth
     .signInWithEmailAndPassword(emailIn.value, passwordIn.value)
@@ -127,14 +147,17 @@ function signIn(ev) {
       console.log(errorCode);
       console.log(errorMessage);
     });
+  signInBtn ? signInBtn.addEventListener("click", signIn) : null;
 }
 
 function signOut(ev) {
+  signOutBtn.removeEventListener("click", signOut);
   ev.preventDefault();
   auth.signOut().then((resp) => {
     console.log("out");
     console.log(resp);
   });
+  signOutBtn ? signOutBtn.addEventListener("click", signOut) : null;
 }
 
 /**Firestore related code */
